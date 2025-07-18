@@ -1,7 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
+import { Router } from '@angular/router';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-auth',
@@ -24,18 +26,23 @@ export class AuthComponent {
   email = '';
   password = '';
   errorMessage = '';
+  router = inject(Router);
+  private apiUrl = environment.apiUrls.master;
 
   constructor(private http: HttpClient) {}
 
   onLogin() {
     this.errorMessage = '';
-    this.http.post('http://localhost:4774/User/login', {
+    this.http.post(`${this.apiUrl}/User/login`, {
       email: this.email,
       password: this.password
     }).subscribe({
-      next: (res) => {
+      next: (res: any) => {
         console.log('Login success:', res);
-        // TODO: Store token, emit event, or redirect
+        // Store user info (token or user object) in localStorage
+        localStorage.setItem('user', JSON.stringify(res.data));
+        // Redirect to home
+        this.router.navigate(['/'])
       },
       error: (err) => {
         this.errorMessage = err?.error?.message || 'Login failed';

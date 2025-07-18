@@ -1,1 +1,31 @@
-<p>booking-table works!</p>
+<div *ngIf="loading">Loading bookings...</div>
+<div *ngIf="error" class="error">{{ error }}</div>
+<table *ngIf="!loading && bookings.length">
+  <thead>
+    <tr>
+      <th>Order No</th>
+      <th>Full Name</th>
+      <th>Mobile</th>
+      <th>Pick Up</th>
+      <th>Drop Off</th>
+      <th>Time Start</th>
+      <th>Time End</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let booking of bookings">
+      <td>{{ booking.orderNo }}</td>
+      <td>{{ booking.fullName }}</td>
+      <td>{{ booking.mobile }}</td>
+      <td>{{ booking.pickUpFrom }}</td>
+      <td>{{ booking.dropOffLocation }}</td>
+      <td>{{ booking.timeStart | date:'short' }}</td>
+      <td>{{ booking.timeEnd | date:'short' }}</td>
+      <td>
+        <button (click)="deleteBooking(booking._id!)">Delete</button>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<div *ngIf="!loading && !bookings.length && !error">No bookings found.</div>

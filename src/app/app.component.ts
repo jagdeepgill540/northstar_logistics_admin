@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { afterNextRender, Component, inject } from '@angular/core';
 import { Router, RouterLink, RouterOutlet } from '@angular/router';
 
 @Component({
@@ -12,7 +12,11 @@ export class AppComponent {
   title = 'frontend';
   isLoggedIn = false;
   constructor(private router:Router){
-
+    afterNextRender(() => {
+    // Check login state on app start
+    this.isLoggedIn = !!localStorage.getItem('user');
+    // Listen for login event
+  })
   }
   login() {
     // TODO: Implement real login logic
@@ -20,7 +24,9 @@ export class AppComponent {
   }
 
   logout() {
-    // TODO: Implement real logout logic
+    // Clear user info and update state
+    localStorage.removeItem('user');
     this.isLoggedIn = false;
+    this.router.navigate(['/login']);
   }
 }
