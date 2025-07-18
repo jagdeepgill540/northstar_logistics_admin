@@ -9,7 +9,7 @@ import { Router, RouterLink, RouterOutlet } from '@angular/router';
   styleUrl: './app.component.css'
 })
 export class AppComponent {
-  title = 'frontend';
+  title = 'northstar_admin';
   isLoggedIn = false;
   constructor(private router:Router){
     afterNextRender(() => {
